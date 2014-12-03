@@ -110,8 +110,8 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 
 -(void)show{
     
-    self.menuHeight = 20;
-   
+    self.menuHeight = 60;
+//
     UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topViewController = appRootVC;
     
@@ -123,25 +123,76 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 //    if ([topViewController.view viewWithTag:CHTumblrMenuViewTag]) {
 //        [[topViewController.view viewWithTag:CHTumblrMenuViewTag] removeFromSuperview];
 //    }
-    
+//
     self.frame = topViewController.view.bounds;
     [topViewController.view addSubview:self];
     
 //    [self startRiseAnimation];
     for (UIView *item in _Items) {
-        [self performSelector:@selector(showItem:) withObject:item afterDelay:1 * [_Items indexOfObject:item]];
+        [self performSelector:@selector(showItem:) withObject:item afterDelay:0.08 * [_Items indexOfObject:item]];
     }
 }
 
 - (void)layoutSubviews{
     [super layoutSubviews];
-     self.frame = CGRectMake(0 , 0, 300, 100);;
+ 
+//    UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+//    UIViewController *topViewController = appRootVC;
+//    
+//    while (topViewController.presentedViewController != nil)
+//    {
+//        topViewController = topViewController.presentedViewController;
+//    }
+//    
+//    self.frame = topViewController.view.bounds;;
+//    [topViewController.view addSubview:self];
+//    __block int biggestWidth = 0;
+//    [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+//        
+//    }];
+//    
+////    self.menuWidth = (biggestWidth * _Items.count) + (self.itemSpacing * (_Items.count - 1));
+//    
+//    CGFloat x = 0;
+//    CGFloat y = 0;
+//    CGFloat itemInitialX = 0;
+//    x = self.superview.frame.size.width / 2 - (self.menuWidth / 2);
+//    y =  self.superview.frame.size.height;
     
-    
-       [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+    [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
 
-            [item setCenter:CGPointMake((idx * 50) + (idx * 10) + (50 / 2), 50 / 2)];
+//        self.menuHeight = MAX(item.frame.size.height, self.menuHeight);
+//        biggestWidth = MAX(item.frame.size.width, biggestWidth);
+//        
+        CGRect frame =  [self frameForItemAtIndex:idx];
+//        [item setCenter:CGPointMake((idx * 50) + (idx * 10) + (50 / 2), 50 / 2)];
+        item.frame = frame;
+        item.layer.opacity = 0;
+        
+        
+//        [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+//            self.menuHeight = MAX(item.frame.size.height, self.menuHeight);
+//            biggestWidth = MAX(item.frame.size.width, biggestWidth);
+//        }];
+        
+//        self.menuWidth = (biggestWidth * _Items.count) + (self.itemSpacing * (_Items.count - 1));
+        
+        
+        
+        
+        
+//        self.frame = CGRectMake(x, y, self.menuWidth, self.menuHeight);;
+        
+        // Layout the items
+        
+//                [item setCenter:CGPointMake((idx * biggestWidth) + (idx * self.itemSpacing) + (biggestWidth / 2), self.menuHeight / 2)];
+
     }];
+    
+//    [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+//        
+//            [item setCenter:CGPointMake((idx * biggestWidth) + (idx * self.itemSpacing) + (biggestWidth / 2), self.menuHeight / 2)];
+//    }];
 
 }
 
@@ -154,6 +205,9 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 
 - (void)dismiss:(id)sender
 {
+    for (UIView *item in _Items) {
+        [self performSelector:@selector(hideItem:) withObject:item afterDelay:1 * [_Items indexOfObject:item]];
+    }
 //    [self dropAnimation];
     double delayInSeconds = CHTumblrMenuViewAnimationTime  + CHTumblrMenuViewAnimationInterval * (_Items.count + 1);
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -331,36 +385,36 @@ static EasingFunction easeOutElastic = ^CGFloat(CGFloat t, CGFloat b, CGFloat c,
 //    
 //}
 //
-//- (CGRect)frameForItemAtIndex:(NSUInteger)index{
-//    
-//    NSUInteger rowIndex = [self gotRowIndex:index];
-//    NSUInteger columnIndex = [self gotColumnIndex:index];
-//    
-//    NSUInteger columnCount = kColumnCount;
-//    NSUInteger rowCount = _Items.count / columnCount + (_Items.count % columnCount >0 ? 1:0);
-//    
-//    CGFloat itemHeight = (CHTumblrMenuViewImageHeight + CHTumblrMenuViewTitleHeight) * rowCount + (rowCount > 1?(rowCount - 1) * CHTumblrMenuViewHorizontalMargin:0);
-//    CGFloat offsetY = (self.bounds.size.height - itemHeight) / 2.0;
-//    CGFloat verticalPadding = (self.bounds.size.width - CHTumblrMenuViewHorizontalMargin * 2 - CHTumblrMenuViewImageHeight * 3) / 2.0;
-//    
-//    CGFloat offsetX = CHTumblrMenuViewHorizontalMargin;
-//    offsetX += (CHTumblrMenuViewImageHeight+ verticalPadding) * columnIndex;
-//    
-//    offsetY += (CHTumblrMenuViewImageHeight + CHTumblrMenuViewTitleHeight + CHTumblrMenuViewVerticalPadding) * rowIndex;
-//
-//    
-//    return CGRectMake(offsetX, offsetY, CHTumblrMenuViewImageHeight, (CHTumblrMenuViewImageHeight+CHTumblrMenuViewTitleHeight));
-//}
-//
-//- (NSUInteger)gotColumnIndex:(NSUInteger)index{
-//    
-//    return   index % kColumnCount;
-//}
-//
-//- (NSUInteger)gotRowIndex:(NSUInteger)index{
-//    
-//    return index/ kColumnCount ;
-//}
+- (CGRect)frameForItemAtIndex:(NSUInteger)index{
+    
+    NSUInteger rowIndex = [self gotRowIndex:index];
+    NSUInteger columnIndex = [self gotColumnIndex:index];
+    
+    NSUInteger columnCount = kColumnCount;
+    NSUInteger rowCount = _Items.count / columnCount + (_Items.count % columnCount >0 ? 1:0);
+    
+    CGFloat itemHeight = (CHTumblrMenuViewImageHeight + CHTumblrMenuViewTitleHeight) * rowCount + (rowCount > 1?(rowCount - 1) * CHTumblrMenuViewHorizontalMargin:0);
+    CGFloat offsetY = (self.bounds.size.height - itemHeight) ;
+    CGFloat verticalPadding = (self.bounds.size.width - CHTumblrMenuViewHorizontalMargin * 2 - CHTumblrMenuViewImageHeight * 3) / 2.0;
+    
+    CGFloat offsetX = CHTumblrMenuViewHorizontalMargin;
+    offsetX += (CHTumblrMenuViewImageHeight+ verticalPadding) * columnIndex;
+    
+    offsetY += (CHTumblrMenuViewImageHeight + CHTumblrMenuViewTitleHeight + CHTumblrMenuViewVerticalPadding) * rowIndex;
+
+    
+    return CGRectMake(offsetX, offsetY, CHTumblrMenuViewImageHeight, (CHTumblrMenuViewImageHeight+CHTumblrMenuViewTitleHeight));
+}
+
+- (NSUInteger)gotColumnIndex:(NSUInteger)index{
+    
+    return   index % kColumnCount;
+}
+
+- (NSUInteger)gotRowIndex:(NSUInteger)index{
+    
+    return index/ kColumnCount ;
+}
 //
 //- (void)animationDidStart:(CAAnimation *)anim
 //{
