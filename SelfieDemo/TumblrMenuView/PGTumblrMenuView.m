@@ -111,6 +111,7 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 -(void)show{
     
     self.menuHeight = 60;
+    self.animationDuration = 1.3;
 //
     UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topViewController = appRootVC;
@@ -135,64 +136,18 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 
 - (void)layoutSubviews{
     [super layoutSubviews];
- 
-//    UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-//    UIViewController *topViewController = appRootVC;
-//    
-//    while (topViewController.presentedViewController != nil)
-//    {
-//        topViewController = topViewController.presentedViewController;
-//    }
-//    
-//    self.frame = topViewController.view.bounds;;
-//    [topViewController.view addSubview:self];
-//    __block int biggestWidth = 0;
-//    [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
-//        
-//    }];
-//    
-////    self.menuWidth = (biggestWidth * _Items.count) + (self.itemSpacing * (_Items.count - 1));
-//    
-//    CGFloat x = 0;
-//    CGFloat y = 0;
-//    CGFloat itemInitialX = 0;
-//    x = self.superview.frame.size.width / 2 - (self.menuWidth / 2);
-//    y =  self.superview.frame.size.height;
     
     [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
 
-//        self.menuHeight = MAX(item.frame.size.height, self.menuHeight);
-//        biggestWidth = MAX(item.frame.size.width, biggestWidth);
-//        
+
         CGRect frame =  [self frameForItemAtIndex:idx];
 //        [item setCenter:CGPointMake((idx * 50) + (idx * 10) + (50 / 2), 50 / 2)];
         item.frame = frame;
         item.layer.opacity = 0;
-        
-        
-//        [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
-//            self.menuHeight = MAX(item.frame.size.height, self.menuHeight);
-//            biggestWidth = MAX(item.frame.size.width, biggestWidth);
-//        }];
-        
-//        self.menuWidth = (biggestWidth * _Items.count) + (self.itemSpacing * (_Items.count - 1));
-        
-        
-        
-        
-        
-//        self.frame = CGRectMake(x, y, self.menuWidth, self.menuHeight);;
-        
-        // Layout the items
-        
-//                [item setCenter:CGPointMake((idx * biggestWidth) + (idx * self.itemSpacing) + (biggestWidth / 2), self.menuHeight / 2)];
 
     }];
     
-//    [_Items enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
-//        
-//            [item setCenter:CGPointMake((idx * biggestWidth) + (idx * self.itemSpacing) + (biggestWidth / 2), self.menuHeight / 2)];
-//    }];
+
 
 }
 
@@ -206,9 +161,9 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
 - (void)dismiss:(id)sender
 {
     for (UIView *item in _Items) {
-        [self performSelector:@selector(hideItem:) withObject:item afterDelay:1 * [_Items indexOfObject:item]];
+        [self performSelector:@selector(hideItem:) withObject:item afterDelay:0.08 * [_Items indexOfObject:item]];
     }
-//    [self dropAnimation];
+
     double delayInSeconds = CHTumblrMenuViewAnimationTime  + CHTumblrMenuViewAnimationInterval * (_Items.count + 1);
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -227,7 +182,7 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
     CGPoint position = item.layer.position;
     
    
-        position.y +=  self.menuHeight;
+        position.y +=  -self.menuHeight;
         
         [self animateLayer:item.layer
                withKeyPath:@"position.y"
@@ -241,7 +196,7 @@ typedef CGFloat (^EasingFunction)(CGFloat, CGFloat, CGFloat, CGFloat);
     CGPoint position = item.layer.position;
     
    
-        position.y +=  -self.menuHeight;
+        position.y +=  self.menuHeight;
         
         [self animateLayer:item.layer
                withKeyPath:@"position.y"
