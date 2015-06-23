@@ -1,3 +1,3 @@
 language: objective-c
 
-script: xcodebuild -workspace TravisExample.xcworkspace -scheme TravisExample -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+script: xcodebuild -project SelfieDemo.xcodeproj -scheme SelfieDemo -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
