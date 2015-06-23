@@ -45,6 +45,7 @@
     
     [menuView show];
     NSLog(@"sdgfsd");
+    NSLog(@"hahahhahahahahah");
 }
 
 @end
