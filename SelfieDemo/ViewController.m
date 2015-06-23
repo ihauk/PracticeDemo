@@ -44,7 +44,7 @@
     [self.view addSubview:menuView];
     
     [menuView show];
-    
+    NSLog(@"sdgfsd");
 }
 
 @end
