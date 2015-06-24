@@ -44,8 +44,7 @@
     [self.view addSubview:menuView];
     
     [menuView show];
-    NSLog(@"sdgfsd");
-    NSLog(@"hahahhahahahahah");
+
 }
 
 @end
